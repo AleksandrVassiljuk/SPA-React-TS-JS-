@@ -1,9 +1,9 @@
 import type { Car } from "../types/car";
-import CarItem from "./CarItem";
+import CarItem from "./caritem";
 
 type Props = {
   cars: Car[];
-  onDelete?: (name: string) => void;
+  onDelete?: (id: number) => void;
   onSelect?: (car: Car) => void;
   loading?: boolean;
 };
@@ -15,53 +15,69 @@ export default function CarList({
   loading = false,
 }: Props) {
 
+  // ⏳ LOADING
   if (loading) {
-    return <div className="empty">⏳ Laen autosid...</div>;
+    return (
+      <div className="empty">
+        <div>⏳</div>
+        <p>Laen autosid...</p>
+      </div>
+    );
   }
 
+  // 🚫 EMPTY
   if (cars.length === 0) {
     return (
       <div className="empty">
-        🚫 Ühtegi autot pole lisatud
+        <h3>🚫 Pole autosid</h3>
         <p>Lisa esimene auto vormi kaudu</p>
       </div>
     );
   }
 
+  const favoriteCount = cars.filter(c => c.favorite).length;
+
   return (
     <div className="car-list">
 
-      {/* STATS */}
+      {/* 📊 HEADER */}
       <div className="stats">
-        <span>🚗 Autosid: {cars.length}</span>
-        <span>💖 Lemmikuid: {cars.filter(c => c.favorite).length}</span>
+        <div>🚗 <b>{cars.length}</b> autot</div>
+        <div>💖 <b>{favoriteCount}</b> lemmikut</div>
       </div>
 
-      {/* LIST */}
-      {cars.map((car) => (
-        <div
-          key={car.id}
-          className={`car-wrapper ${car.favorite ? "favorite" : ""}`}
-        >
-          <CarItem
-            car={car}
-            onDelete={onDelete}
-            onSelect={onSelect}
-          />
+      {/* 🧱 LIST */}
+      <div className="car-grid">
 
-          <div className="car-meta">
-            <small>📅 Aasta: {car.year}</small>
+        {cars.map((car) => (
+          <div
+            key={car.id}
+            className={`car-wrapper ${car.favorite ? "favorite" : ""}`}
+          >
 
-            {car.favorite && (
-              <span className="fav-badge">💖 FAVORITE</span>
-            )}
+            <CarItem
+              car={car}
+              onSelect={onSelect}
+              onDelete={onDelete}
+            />
+
+            {/* 📅 EXTRA INFO */}
+            <div className="car-meta">
+              <span>📅 {car.year}</span>
+
+              {car.favorite && (
+                <span className="fav-badge">❤️ lemmik</span>
+              )}
+            </div>
+
           </div>
-        </div>
-      ))}
+        ))}
 
-      {/* FOOTER */}
+      </div>
+
+      {/* 📦 FOOTER */}
       <div className="footer">
-        📦 Andmed salvestatakse automaatselt
+        📦 Andmed salvestuvad automaatselt
       </div>
 
     </div>

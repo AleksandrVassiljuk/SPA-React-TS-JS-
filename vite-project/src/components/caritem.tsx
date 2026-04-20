@@ -2,11 +2,7 @@ import type { Car } from "../types/car";
 
 type Props = {
   car: Car;
-
-  // 🗑 delete auto
   onDelete?: (id: number) => void;
-
-  // 👁 select / view auto
   onSelect?: (car: Car) => void;
 };
 
@@ -21,7 +17,7 @@ export default function CarItem({ car, onDelete, onSelect }: Props) {
   };
 
   return (
-    <div className="car-item">
+    <div className={`car-item ${car.favorite ? "favorite" : ""}`}>
 
       {/* 📸 IMAGE */}
       <img
@@ -31,12 +27,15 @@ export default function CarItem({ car, onDelete, onSelect }: Props) {
           `https://source.unsplash.com/400x250/?${car.brand},car`
         }
         alt={car.name}
+        loading="lazy"
       />
 
       {/* INFO */}
       <div className="car-left">
 
-        <h3 className="car-title">🚗 {car.name}</h3>
+        <h3 className="car-title">
+          🚗 {car.name}
+        </h3>
 
         <p className="car-brand">
           🏷 {car.brand}
@@ -47,16 +46,16 @@ export default function CarItem({ car, onDelete, onSelect }: Props) {
         </p>
 
         {/* BADGE */}
-        <div className="badge">
+        <span className="badge">
           {getBadge()}
-        </div>
+        </span>
 
       </div>
 
-      {/* ACTION BUTTONS */}
+      {/* ACTIONS */}
       <div className="car-actions">
 
-        {/* 👁 VIEW */}
+        {/* VIEW */}
         {onSelect && (
           <button
             className="view-btn"
@@ -66,7 +65,7 @@ export default function CarItem({ car, onDelete, onSelect }: Props) {
           </button>
         )}
 
-        {/* 🗑 DELETE */}
+        {/* DELETE */}
         {onDelete && (
           <button
             className="delete-btn"
