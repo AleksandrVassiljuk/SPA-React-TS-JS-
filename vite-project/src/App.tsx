@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Car } from "./types/car";
 import CarForm from "./components/CarForm";
 import CarList from "./components/Carlist";
@@ -6,44 +6,100 @@ import CarList from "./components/Carlist";
 export default function App() {
   const [cars, setCars] = useState<Car[]>([]);
   const [search, setSearch] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
-  // LOAD from localStorage
+  // LOAD
   useEffect(() => {
     const saved = localStorage.getItem("cars");
     if (saved) setCars(JSON.parse(saved));
   }, []);
 
-  // SAVE to localStorage
+  // SAVE
   useEffect(() => {
     localStorage.setItem("cars", JSON.stringify(cars));
   }, [cars]);
 
+  // ADD
   function addCar(car: Car) {
     setCars((prev) => [...prev, car]);
   }
 
-  function deleteCar(id: number) {
-    setCars((prev) => prev.filter((car) => car.id !== id));
+  // DELETE
+  function deleteCar(name: string) {
+    setCars((prev) => prev.filter((c) => c.name !== name));
   }
 
-  const filteredCars = cars.filter(
-    (car) =>
-      car.name.toLowerCase().includes(search.toLowerCase()) ||
-      car.brand.toLowerCase().includes(search.toLowerCase())
-  );
+  // SELECT
+  function selectCar(car: Car) {
+    setSelectedCar(car);
+  }
+
+  // CLEAR SELECTED
+  function clearSelected() {
+    setSelectedCar(null);
+  }
+
+  // FILTER + SORT (optimiseeritud)
+  const filteredCars = useMemo(() => {
+    return cars
+      .filter(
+        (car) =>
+          car.name.toLowerCase().includes(search.toLowerCase()) ||
+          car.brand.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) =>
+        sortAsc
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
+  }, [cars, search, sortAsc]);
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+    <div className="app">
+
+      {/* HEADER */}
       <h1>🚗 Car Collection</h1>
 
-      <input
-        placeholder="Search car..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      {/* STATS */}
+      <div className="stats">
+        <p>📊 Autosid kokku: {cars.length}</p>
+        <p>🔍 Filtreeritud: {filteredCars.length}</p>
+      </div>
 
+      {/* SEARCH + SORT */}
+      <div className="top-bar">
+        <input
+          className="search"
+          placeholder="Otsi autot või brandi..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <button onClick={() => setSortAsc(!sortAsc)}>
+          ↕ Sort {sortAsc ? "A-Z" : "Z-A"}
+        </button>
+      </div>
+
+      {/* SELECTED CAR BOX */}
+      {selectedCar && (
+        <div className="selected-box">
+          <h3>🚘 Valitud auto</h3>
+          <p>{selectedCar.name}</p>
+          <p>{selectedCar.brand}</p>
+          <button onClick={clearSelected}>Sulge</button>
+        </div>
+      )}
+
+      {/* FORM */}
       <CarForm onAdd={addCar} />
-      <CarList cars={filteredCars} onDelete={deleteCar} />
+
+      {/* LIST */}
+      <CarList
+        cars={filteredCars}
+        onDelete={deleteCar}
+        onSelect={selectCar}
+      />
     </div>
   );
 }
