@@ -1,46 +1,50 @@
+
+/* SEARCH */
 .search {
   width: 100%;
   padding: 12px;
-  margin-bottom: 12px;
   border-radius: 10px;
   border: 1px solid #ddd;
   transition: 0.2s;
+  margin-bottom: 10px;
 }
 
 .search:focus {
   border-color: #7c3aed;
   box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+  outline: none;
 }
 
-/* TOP BAR (search + sort) */
+/* TOP BAR */
 .top-bar {
   display: flex;
   gap: 10px;
   align-items: center;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
 .top-bar button {
   white-space: nowrap;
 }
 
-/* CAR LIST WRAPPER */
+/* LIST */
 .car-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* CAR ITEM UPGRADE */
+/* CAR CARD */
 .car-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: #fff;
   padding: 16px;
   border-radius: 14px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.05);
-  transition: 0.25s ease;
+  transition: 0.25s;
 }
 
 .car-item:hover {
@@ -48,11 +52,12 @@
   box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
-/* LEFT SIDE INFO */
+/* LEFT INFO */
 .car-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .car-title {
@@ -65,10 +70,39 @@
   color: #666;
 }
 
-/* ACTION BUTTONS */
+/* ACTIONS */
 .car-actions {
   display: flex;
   gap: 8px;
+}
+
+/* BUTTONS (FIX IMPORTANT) */
+button {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  color: white;
+}
+
+/* DELETE */
+.delete-btn {
+  background: #ef4444;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+/* VIEW */
+.view-btn {
+  background: #3b82f6;
+}
+
+.view-btn:hover {
+  background: #2563eb;
 }
 
 /* BADGES */
@@ -78,6 +112,7 @@
   font-size: 12px;
   border-radius: 999px;
   margin-top: 5px;
+  width: fit-content;
 }
 
 .badge.bmw {
@@ -90,6 +125,11 @@
   color: white;
 }
 
+.badge.toyota {
+  background: #ef4444;
+  color: white;
+}
+
 .badge.normal {
   background: #e5e7eb;
   color: #333;
@@ -99,17 +139,31 @@
 .empty {
   text-align: center;
   padding: 20px;
-  background: white;
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.05);
   color: #777;
 }
 
-/* STATS BOX */
+/* STATS */
 .stats {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 14px;
   color: #555;
+}
+
+/* MOBILE FIX */
+@media (max-width: 600px) {
+  .car-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .car-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
 }

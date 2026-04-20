@@ -1,72 +1,69 @@
-import { useMemo, useState } from "react";
 import type { Car } from "../types/car";
-import CarItem from "./caritem";
+import CarItem from "./CarItem";
 
 type Props = {
   cars: Car[];
   onDelete?: (name: string) => void;
   onSelect?: (car: Car) => void;
+  loading?: boolean;
 };
 
-export default function CarList({ cars, onDelete, onSelect }: Props) {
-  const [search, setSearch] = useState("");
-  const [sortAsc, setSortAsc] = useState(true);
+export default function CarList({
+  cars,
+  onDelete,
+  onSelect,
+  loading = false,
+}: Props) {
 
-  // FILTER + SORT (optimeeritud)
-  const filteredCars = useMemo(() => {
-    return cars
-      .filter(
-        (car) =>
-          car.name.toLowerCase().includes(search.toLowerCase()) ||
-          car.brand.toLowerCase().includes(search.toLowerCase())
-      )
-      .sort((a, b) =>
-        sortAsc
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
-      );
-  }, [cars, search, sortAsc]);
+  if (loading) {
+    return <div className="empty">⏳ Laen autosid...</div>;
+  }
+
+  if (cars.length === 0) {
+    return (
+      <div className="empty">
+        🚫 Ühtegi autot pole lisatud
+        <p>Lisa esimene auto vormi kaudu</p>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {/* TOP BAR */}
-      <div className="carlist-top">
-        <input
-          className="search-input"
-          placeholder="🔍 Otsi autot või brandi..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="car-list">
 
-        <button
-          className="sort-btn"
-          onClick={() => setSortAsc(!sortAsc)}
-        >
-          ↕ Sort {sortAsc ? "A-Z" : "Z-A"}
-        </button>
-
-        <span className="count">
-          🚗 Autosid: {filteredCars.length}
-        </span>
+      {/* STATS */}
+      <div className="stats">
+        <span>🚗 Autosid: {cars.length}</span>
+        <span>💖 Lemmikuid: {cars.filter(c => c.favorite).length}</span>
       </div>
 
       {/* LIST */}
-      <div className="car-list">
-        {filteredCars.length === 0 ? (
-          <div className="empty-box">
-            😕 Midagi ei leitud
+      {cars.map((car) => (
+        <div
+          key={car.id}
+          className={`car-wrapper ${car.favorite ? "favorite" : ""}`}
+        >
+          <CarItem
+            car={car}
+            onDelete={onDelete}
+            onSelect={onSelect}
+          />
+
+          <div className="car-meta">
+            <small>📅 Aasta: {car.year}</small>
+
+            {car.favorite && (
+              <span className="fav-badge">💖 FAVORITE</span>
+            )}
           </div>
-        ) : (
-          filteredCars.map((car) => (
-            <CarItem
-              key={car.name}
-              car={car}
-              onDelete={onDelete}
-              onSelect={onSelect}
-            />
-          ))
-        )}
+        </div>
+      ))}
+
+      {/* FOOTER */}
+      <div className="footer">
+        📦 Andmed salvestatakse automaatselt
       </div>
+
     </div>
   );
 }

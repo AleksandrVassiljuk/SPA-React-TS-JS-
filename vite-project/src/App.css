@@ -1,3 +1,4 @@
+
 /* RESET */
 * {
   box-sizing: border-box;
@@ -23,7 +24,7 @@ body {
   color: var(--text);
 }
 
-/* APP WRAPPER */
+/* APP */
 .app {
   max-width: 900px;
   margin: 40px auto;
@@ -37,19 +38,19 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* SEARCH + TOP BAR */
+/* TOP BAR */
 .top-bar {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
 }
 
+/* SEARCH */
 .search {
   flex: 1;
   padding: 12px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  transition: 0.2s;
 }
 
 .search:focus {
@@ -58,19 +59,20 @@ h1 {
   outline: none;
 }
 
-.sort-btn {
-  padding: 10px 14px;
-  border-radius: 10px;
+/* GLOBAL BUTTON */
+button {
+  padding: 10px;
   border: none;
-  background: var(--accent);
+  border-radius: 8px;
   color: white;
   cursor: pointer;
+  font-weight: bold;
   transition: 0.2s;
+  background: var(--accent);
 }
 
-.sort-btn:hover {
+button:hover {
   background: var(--accent-hover);
-  transform: scale(1.05);
 }
 
 /* FORM */
@@ -89,69 +91,65 @@ input {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  outline: none;
-  transition: 0.2s;
 }
 
 input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+  outline: none;
 }
 
-button {
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: var(--accent);
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-button:hover {
-  background: var(--accent-hover);
-}
-
-/* CAR LIST */
+/* LIST */
 .car-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-/* CAR CARD */
+/* CARD */
 .car-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 12px;
   background: var(--card-bg);
-  padding: 16px;
+  padding: 14px;
   border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  transition: 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  align-items: center;
+  transition: 0.2s;
 }
 
 .car-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
 }
 
-/* CAR INFO */
+/* IMAGE */
+.car-img {
+  width: 140px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* TEXT */
 .car-left {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .car-title {
   font-size: 18px;
-  font-weight: bold;
+  color: var(--accent);
 }
 
 .car-brand {
-  font-size: 14px;
   color: var(--muted);
+}
+
+.car-desc {
+  font-size: 13px;
+  color: #777;
 }
 
 /* ACTIONS */
@@ -160,13 +158,22 @@ button:hover {
   gap: 8px;
 }
 
-/* DELETE BUTTON */
-.car-item button {
+/* DELETE BUTTON ONLY */
+.delete-btn {
   background: #ef4444;
 }
 
-.car-item button:hover {
+.delete-btn:hover {
   background: #dc2626;
+}
+
+/* VIEW BUTTON */
+.view-btn {
+  background: #3b82f6;
+}
+
+.view-btn:hover {
+  background: #2563eb;
 }
 
 /* BADGES */
@@ -174,8 +181,10 @@ button:hover {
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 12px;
+  width: fit-content;
   margin-top: 6px;
-  display: inline-block;
+  background: #e5e7eb;
+  color: #333;
 }
 
 .badge.bmw {
@@ -184,16 +193,16 @@ button:hover {
 }
 
 .badge.audi {
-  background: #60a5fa;
+  background: #3b82f6;
   color: white;
 }
 
-.badge.normal {
-  background: #e5e7eb;
-  color: #333;
+.badge.toyota {
+  background: #ef4444;
+  color: white;
 }
 
-/* EMPTY STATE */
+/* EMPTY */
 .empty {
   text-align: center;
   padding: 20px;

@@ -25,9 +25,9 @@ export default function App() {
     setCars((prev) => [...prev, car]);
   }
 
-  // DELETE
-  function deleteCar(name: string) {
-    setCars((prev) => prev.filter((c) => c.name !== name));
+  // 🚨 FIXED DELETE (ID BAASIL)
+  function deleteCar(id: number) {
+    setCars((prev) => prev.filter((c) => c.id !== id));
   }
 
   // SELECT
@@ -35,12 +35,12 @@ export default function App() {
     setSelectedCar(car);
   }
 
-  // CLEAR SELECTED
+  // CLEAR
   function clearSelected() {
     setSelectedCar(null);
   }
 
-  // FILTER + SORT (optimiseeritud)
+  // FILTER + SORT
   const filteredCars = useMemo(() => {
     return cars
       .filter(
@@ -81,13 +81,16 @@ export default function App() {
         </button>
       </div>
 
-      {/* SELECTED CAR BOX */}
+      {/* SELECTED CAR */}
       {selectedCar && (
         <div className="selected-box">
           <h3>🚘 Valitud auto</h3>
           <p>{selectedCar.name}</p>
           <p>{selectedCar.brand}</p>
-          <button onClick={clearSelected}>Sulge</button>
+
+          <button onClick={clearSelected}>
+            Sulge
+          </button>
         </div>
       )}
 

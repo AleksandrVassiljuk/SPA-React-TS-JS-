@@ -2,55 +2,82 @@ import type { Car } from "../types/car";
 
 type Props = {
   car: Car;
-  onDelete?: (name: string) => void;
+
+  // 🗑 delete auto
+  onDelete?: (id: number) => void;
+
+  // 👁 select / view auto
   onSelect?: (car: Car) => void;
 };
 
 export default function CarItem({ car, onDelete, onSelect }: Props) {
+
+  // 🧠 badge logic
+  const getBadge = () => {
+    if (car.favorite) return "💖 Favorite";
+    if (car.brand === "BMW") return "🔥 Premium";
+    if (car.brand === "Audi") return "💎 Luxury";
+    return "🚘 Standard";
+  };
+
   return (
     <div className="car-item">
-      {/* HEADER */}
-      <div className="car-header">
-        <div>
-          <h3 className="car-name">🚘 {car.name}</h3>
-          <p className="car-brand">🏷️ {car.brand}</p>
+
+      {/* 📸 IMAGE */}
+      <img
+        className="car-img"
+        src={
+          car.image ||
+          `https://source.unsplash.com/400x250/?${car.brand},car`
+        }
+        alt={car.name}
+      />
+
+      {/* INFO */}
+      <div className="car-left">
+
+        <h3 className="car-title">🚗 {car.name}</h3>
+
+        <p className="car-brand">
+          🏷 {car.brand}
+        </p>
+
+        <p className="car-year">
+          📅 {car.year}
+        </p>
+
+        {/* BADGE */}
+        <div className="badge">
+          {getBadge()}
         </div>
 
-        <div className="car-actions">
-          {onSelect && (
-            <button
-              className="select-btn"
-              onClick={() => onSelect(car)}
-            >
-              👁 Vaata
-            </button>
-          )}
-
-          {onDelete && (
-            <button
-              className="delete-btn"
-              onClick={() => onDelete(car.name)}
-            >
-              ❌ Kustuta
-            </button>
-          )}
-        </div>
       </div>
 
-      {/* INFO BOX */}
-      <div className="car-info-box">
-        <p>📌 Auto nimi: <b>{car.name}</b></p>
-        <p>🏭 Bränd: <b>{car.brand}</b></p>
-      </div>
+      {/* ACTION BUTTONS */}
+      <div className="car-actions">
 
-      {/* STATUS BADGE (näide lisafunktsioonist) */}
-      <div className="car-badge">
-        {car.brand === "BMW" && <span className="badge bmw">Premium</span>}
-        {car.brand === "Audi" && <span className="badge audi">Luxury</span>}
-        {car.brand !== "BMW" && car.brand !== "Audi" && (
-          <span className="badge normal">Standard</span>
+        {/* 👁 VIEW */}
+        {onSelect && (
+          <button
+            className="view-btn"
+            onClick={() => onSelect(car)}
+          >
+            👁 View
+          </button>
         )}
+
+        {/* 🗑 DELETE */}
+        {onDelete && (
+          <button
+            className="delete-btn"
+            onClick={() => onDelete(car.id)}
+          >
+            🗑 Delete
+          </button>
+        )}
+
       </div>
+
     </div>
   );
 }
